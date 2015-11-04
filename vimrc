@@ -25,7 +25,7 @@ syntax on
 call plug#begin('~/.vim/plugged')
 
 " dependencies
-Plug 'elixir-lang/vim-elixir'
+
 Plug 'tmhedberg/matchit'
 Plug 'kana/vim-textobj-user' " dep for: textobj-rubyblock(R)
 Plug 'tpope/vim-dispatch'    " dep for: vim-test(O)
@@ -150,7 +150,6 @@ let g:yankring_manual_clipboard_check = 0
 let g:yankring_replace_n_pkey = ''
 let g:yankring_replace_n_nkey = ''
 
-" Plug 'Raimondi/delimitMate'
 Plug 'jiangmiao/auto-pairs'
 let g:AutoPairsMapSpace = 0
 let g:AutoPairsMultilineClose = 1
@@ -192,6 +191,10 @@ let g:go_highlight_build_constraints = 1
 let g:go_fmt_autosave = 1
 let g:go_dispatch_enabled = 1
 let g:go_fmt_command = 'goimports'
+
+" elixir
+
+Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 
 " ruby
 
@@ -248,7 +251,7 @@ set colorcolumn=80
 set complete-=i
 set cursorline
 set diffopt=filler,iwhite                        " In diff mode, ignore whitespace changes and align unchanged lines
-set directory=~/.vim/swap                        " Directory to use for the swap file
+set directory=.,$TEMP                            " Directory to use for the swap file
 set endofline
 set expandtab
 set exrc                                         " enable per-directory .vimrc files
@@ -371,13 +374,6 @@ nmap <leader><leader> <C-^>
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
-" delete into blackhole register by default
-" nnoremap <leader>d "ad
-" nnoremap <leader>dd "add
-" nnoremap <leader>D "aD
-" nnoremap <leader>p "ap
-" nnoremap <leader>P "aP
-
 " jump to end after pasting
 " vnoremap <silent> y y`]
 " vnoremap <silent> p p`]
@@ -407,6 +403,10 @@ nnoremap <silent> \ @=(foldlevel('.')?'za':"\<Space>")<CR>
 
 " fzf.vim
 nnoremap <silent> <leader>o :FZFFiles<cr>
+
+" jit
+vnoremap <silent> <localleader>jo :Jit open<CR>
+nnoremap <silent> <localleader>jo :Jit open <cWORD><CR>
 
 " toggle quickfix/location
 function! s:GetBufferList()
@@ -659,7 +659,7 @@ augroup MarkdownGroup
   autocmd FileType markdown set nofoldenable
 
   autocmd FileType markdown nmap <buffer> <localleader>i <Plug>(todo-new)
-  autocmd FileType markdown nmap <buffer> <localleader>i <Plug>(todo-new)
+  autocmd FileType markdown nmap <buffer> <localleader>I <Plug>(todo-new-below)
   autocmd FileType markdown imap <buffer> <localleader>i <Plug>(todo-new)
   autocmd FileType markdown imap <buffer> <localleader>I <Plug>(todo-new-below)
 
@@ -717,6 +717,9 @@ augroup END
 
 " External {{{
 
+" golint support
+set runtimepath+=$GOPATH/src/github.com/golang/lint/misc/vim
+
 " ag
 if executable('ag')
   set grepprg=ag\ -f\ --vimgrep\ $*
@@ -725,11 +728,6 @@ endif
 
 " }}} /external
 
-set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
-autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
-
 if filereadable(expand('~/.vimrc.local'))
   source expand('~/.vimrc.local')
 endif
-
-
