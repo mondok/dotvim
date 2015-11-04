@@ -1,6 +1,6 @@
-# My Vim Config
+# Rovim Config
 
-This is my vim setup.
+This is my vim setup originally created by [Rob Hurring](https://github.com/robhurring).
 
 ### Installing
 
