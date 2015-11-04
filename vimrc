@@ -725,7 +725,11 @@ endif
 
 " }}} /external
 
+set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+
 if filereadable(expand('~/.vimrc.local'))
   source expand('~/.vimrc.local')
 endif
+
 
