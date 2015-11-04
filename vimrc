@@ -25,7 +25,7 @@ syntax on
 call plug#begin('~/.vim/plugged')
 
 " dependencies
-
+Plug 'elixir-lang/vim-elixir'
 Plug 'tmhedberg/matchit'
 Plug 'kana/vim-textobj-user' " dep for: textobj-rubyblock(R)
 Plug 'tpope/vim-dispatch'    " dep for: vim-test(O)
