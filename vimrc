@@ -54,6 +54,9 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 let g:fzf_command_prefix = 'FZF'
 
+Plug 'robhurring/todo.vim'
+let g:todo_file = expand('~/Dropbox/config/todo.md')
+
 Plug 'mhinz/vim-grepper'
 let g:grepper = {}
 let g:grepper.open = 1
@@ -199,7 +202,8 @@ Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
 " ruby
 
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'rhysd/vim-textobj-ruby'
+
 Plug 'tpope/vim-cucumber'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
@@ -231,43 +235,35 @@ endif
 call plug#end()
 runtime macros/matchit.vim
 
-" My plugin config
-let g:todo_file = expand('~/Dropbox/config/todo.md')
-
 " }}} /plugins
 
 " Options {{{
 " http://vimdoc.sourceforge.net/htmldoc/quickref.html
 
 " set autochdir
-" set autowrite
+
 
 set autoindent
 set autoread
-set backspace=eol,start,indent                   " Allow backspacing over indent, eol, & start
 set backupdir=~/.vim/tmp
 set clipboard=unnamed
-set colorcolumn=80
-set complete-=i
+set colorcolumn=81
 set cursorline
-set diffopt=filler,iwhite                        " In diff mode, ignore whitespace changes and align unchanged lines
-set directory=.,$TEMP                            " Directory to use for the swap file
-set endofline
+set diffopt=filler,iwhite,vertical               " In diff mode, ignore whitespace changes and align unchanged lines
 set expandtab
 set exrc                                         " enable per-directory .vimrc files
+set guifont=Hack:h15
 set hidden                                       " Don't abandon buffers moved to the background
 set hlsearch
 set ignorecase
 set incsearch
 set laststatus=2
 set lazyredraw
-set linebreak
 set list                                         " Display unprintable characters
 set listchars=tab:▸\ ,extends:»,precedes:«
 set noerrorbells                                 " Disable error bells
 set nofoldenable
 set nowrap
-set nrformats=                                   " default to decimal
 set number
 set scrolloff=3                                  " Start scrolling 3 lines before the horizontal window border
 set secure                                       " disable unsafe commands in local .vimrc files
@@ -285,9 +281,7 @@ set splitright
 set tabstop=2
 set tags+=./tags
 set tags+=.git/tags
-set undodir=~/.vim/undo
 set undofile
-set updatecount=100                              " Write swap file to disk every 100 chars
 set updatetime=1000
 set wildignore+=*/tmp/*,*/log/*,*.zip,*.so,*.swp
 set wildmenu                                     " Enhanced completion hints in command line
@@ -304,9 +298,6 @@ if has('mouse')
 endif
 
 " GUI rules
-if has('gui_running')
-  set guifont=Hack:h15
-endif
 
 " fix nvim's <C-h>
 if has('nvim')
@@ -440,9 +431,9 @@ nmap <silent> <leader>l :call <SID>ToggleList("Location List", 'l')<CR>
 nmap <silent> <leader>c :call <SID>ToggleList("Quickfix List", 'c')<CR>
 nnoremap <silent> <leader>sc :cg /tmp/quickfix.out\|copen<CR>
 
-" saving
-" imap <C-s> <Esc>:update<CR>gi
-nmap <C-s> <Esc>:update<CR>
+" saving (keep imap to avoid vim-surround from binding it)
+inoremap <C-s> <Esc>:update<CR>
+nnoremap <C-s> <Esc>:update<CR>
 
 " remap pum selection
 " inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
@@ -503,6 +494,10 @@ nmap <silent> <Leader>t :TestFile<CR>
 nmap <silent> <Leader>T :TestNearest<CR>
 nmap <silent> <Leader>tl :TestLast<CR>
 nmap <silent> <Leader>ta :TestSuite<CR>
+
+nmap <silent> <F7> :TestLast<CR>
+nmap <silent> <F8> :TestFile<CR>
+nmap <silent> <F9> :TestSuite<CR>
 
 " vim-jdaddy
 command! JSONPrettyPrint :normal gqaj
@@ -731,3 +726,4 @@ endif
 if filereadable(expand('~/.vimrc.local'))
   source expand('~/.vimrc.local')
 endif
+
