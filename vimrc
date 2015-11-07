@@ -197,7 +197,7 @@ let g:go_fmt_command = 'goimports'
 
 " elixir
 
-Plug 'elixir-lang/vim-elixir', {'for': 'elixir'}
+Plug 'elixir-lang/vim-elixir'
 
 " ruby
 
