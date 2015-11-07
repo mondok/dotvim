@@ -9,3 +9,6 @@ vim/tmp
 vim/doc/tags
 vim/vim*
 vim/.netrw*
+.vimrc.*
+.*.un~
+*.swp
