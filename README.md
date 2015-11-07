@@ -35,6 +35,8 @@ This is my vim setup originally created by [Rob Hurring](https://github.com/robh
 
 All the plugins are listed in `vimrc` and are handled by `vim-plug`
 
+* YCM is a pain in the ass.  You need to build it against the same python used for ```make install``` and install with ```./install.py --clang-completer```
+
 ###### Installing
 
 * run `make bundle` to install any new bundles
