@@ -2,6 +2,8 @@
 
 if !has('nvim')
   set nocompatible
+
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 endif
 filetype off
 
@@ -11,12 +13,6 @@ let g:maplocalleader=','
 inoremap <C-c> <Esc>
 inoremap jk <Esc>l
 " nnoremap ,, ,
-
-if $TERM =~? '256color'
-  set t_Co=256
-elseif $TERM =~? '^xterm$'
-  set t_Co=256
-endif
 
 filetype plugin indent on                  " Do filetype detection and load custom file plugins and indent files
 syntax on
@@ -50,6 +46,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-unimpaired'
+Plug 'Chiel92/vim-autoformat'
+" Plug 'dhruvasagar/vim-markify'
+" let g:markify_error_text = "\u25CF"
+" let g:markify_warning_text = "\u25CF"
+" let g:markify_info_text = "\u25CF"
+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 let g:fzf_command_prefix = 'FZF'
@@ -60,9 +62,6 @@ let g:todo_file = expand('~/Dropbox/config/todo.md')
 Plug 'mhinz/vim-grepper'
 let g:grepper = {}
 let g:grepper.open = 1
-
-Plug 'Chiel92/vim-autoformat'
-let g:formatdef_rbeautify = '"ruby-beautify ".(&expandtab ? "-s -c ".&shiftwidth : "-t")'
 
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger       = '<Tab>'
@@ -101,12 +100,6 @@ let g:gist_open_browser_after_post = 1
 let g:gist_post_private = 1
 let g:gist_show_privates = 1
 
-Plug 'terryma/vim-multiple-cursors'
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-
 Plug 'mhinz/vim-signify'
 let g:signify_vcs_list = ['git']
 
@@ -137,15 +130,19 @@ let g:neomake_ruby_rspec_maker = {
       \ 'errorformat': '%E%f:%l:\ %m'
       \ }
 
-Plug 'szw/vim-tags'
-let g:vim_tags_auto_generate = 0
-let g:vim_tags_cache_dir = expand('~/.vim/tmp')
-let g:vim_tags_ignore_files = ['.gitignore']
-let g:vim_tags_ignore_file_comment_pattern = '^[#"]'
-let g:vim_tags_directories = ['.git']
-let g:vim_tags_main_file = 'tags'
-let g:vim_tags_use_language_field = 1
-let g:vim_tags_use_vim_dispatch = 1
+Plug 'ludovicchabant/vim-gutentags', {'do': 'gem install ripper-tags'}
+let g:gutentags_ctags_executable_ruby = 'ripper-tags'
+let g:gutentags_cache_dir = '~/.vim/tags'
+
+" Plug 'szw/vim-tags'
+" let g:vim_tags_auto_generate = 0
+" let g:vim_tags_cache_dir = expand('~/.vim/tmp')
+" let g:vim_tags_ignore_files = ['.gitignore']
+" let g:vim_tags_ignore_file_comment_pattern = '^[#"]'
+" let g:vim_tags_directories = ['.git']
+" let g:vim_tags_main_file = 'tags'
+" let g:vim_tags_use_language_field = 1
+" let g:vim_tags_use_vim_dispatch = 1
 
 Plug 'vim-scripts/YankRing.vim'
 let g:yankring_history_dir = '$HOME/.vim/tmp'
@@ -155,8 +152,7 @@ let g:yankring_replace_n_nkey = ''
 
 Plug 'jiangmiao/auto-pairs'
 let g:AutoPairsMapSpace = 0
-let g:AutoPairsMultilineClose = 1
-let g:AutoPairsFlyMode = 0
+let g:AutoPairsMultilineClose = 0
 let g:AutoPairsShortcutBackInsert = '<M-b>'
 let g:AutoPairsShortcutFastWrap = '<M-e>'
 let g:AutoPairsShortcutJump = '<M-n>'
@@ -185,6 +181,7 @@ let g:used_javascript_libs = 'underscore,angularjs,jquery,angularui,jasmine,reac
 
 " go
 
+Plug 'rhysd/vim-go-impl', {'for': 'go'}
 Plug 'fatih/vim-go', {'for': 'go'}
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -224,6 +221,7 @@ let g:ycm_key_list_select_completion   = ['<C-j>']
 let g:ycm_key_list_previous_completion = ['<C-k>']
 let g:ycm_completion_confirm_key       = '<CR>'
 let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_min_num_identifier_candidate_chars = 3
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 
@@ -262,7 +260,8 @@ set lazyredraw
 set list                                         " Display unprintable characters
 set listchars=tab:▸\ ,extends:»,precedes:«
 set noerrorbells                                 " Disable error bells
-set nofoldenable
+set foldenable
+set foldlevel=99
 set nowrap
 set number
 set scrolloff=3                                  " Start scrolling 3 lines before the horizontal window border
@@ -297,13 +296,6 @@ if has('mouse')
   set mouse=a
 endif
 
-" GUI rules
-
-" fix nvim's <C-h>
-if has('nvim')
-  nmap <BS> <C-w>h
-endif
-
 " viminfo: remember certain things when we exit
 " (http://vimdoc.sourceforge.net/htmldoc/usr_21.html)
 "   %    : saves and restores the buffer list
@@ -335,7 +327,7 @@ endtry
 highlight SignColumn    cterm=none ctermbg=233 guibg=#111111
 highlight LineNr        cterm=none ctermbg=233 guibg=#111111
 highlight CursorLineNr  cterm=none ctermbg=233 guifg=#d4d987 guibg=#111111
-highlight Search        cterm=none ctermfg=177 ctermbg=238   guifg=#cd7ffa guibg=#3a3a3a gui=underline
+highlight Search        cterm=none ctermfg=177 ctermbg=238   guifg=#cd7ffa guibg=#3a3a3a
 highlight Todo          cterm=none ctermfg=207 ctermbg=none  guifg=#e158e8 guibg=#5b415c
 highlight ColorColumn   cterm=none ctermbg=234 guibg=#292929
 
@@ -356,14 +348,14 @@ highlight SignifySignChange cterm=bold ctermbg=233 ctermfg=227 guifg=#d4d987 gui
 nnoremap <Leader>w :w<CR>
 
 " Search settings
-nmap <silent> <leader>/ :noh<CR>
+nnoremap <silent> <leader>/ :noh<CR>
 
 " swap buffers
-nmap <leader><leader> <C-^>
+nnoremap <leader><leader> <C-^>
 
 " vim-expand-region
-vmap v <Plug>(expand_region_expand)
-vmap <C-v> <Plug>(expand_region_shrink)
+vnoremap v <Plug>(expand_region_expand)
+vnoremap <C-v> <Plug>(expand_region_shrink)
 
 " jump to end after pasting
 " vnoremap <silent> y y`]
@@ -378,12 +370,12 @@ command! QA qall
 command! E e
 
 " buffers / windows
-nmap <C-t> <esc>:enew<CR>
-nmap <C-x> :bd<cr>
+nnoremap <C-t> <esc>:enew<CR>
+nnoremap <C-x> :bd<cr>
 
 " Emacs-like beginning and end of line.
-imap <C-e> <C-o>$
-imap <C-a> <C-o>^
+inoremap <C-e> <C-o>$
+inoremap <C-a> <C-o>^
 
 " up/down on displayed lines, not real lines. More useful than painful.
 nnoremap k gk
@@ -391,13 +383,16 @@ nnoremap j gj
 
 " toggle folds
 nnoremap <silent> \ @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap \ zf
 
-" fzf.vim
-nnoremap <silent> <leader>o :FZFFiles<cr>
+" fzf.vim <C-Space>
+nnoremap <NUL> :FZFFiles<cr>
+nnoremap <C-Space> :FZFFiles<cr>
 
 " jit
-vnoremap <silent> <localleader>jo :Jit open<CR>
-nnoremap <silent> <localleader>jo :Jit open <cWORD><CR>
+nnoremap <silent> <localleader>J <Plug>(jit-prompt)
+nnoremap <silent> <localleader>jo <Plug>(jit-open-prompt)
+nnoremap <silent> <localleader>jO <Plug>(jit-open-word)
 
 " toggle quickfix/location
 function! s:GetBufferList()
@@ -427,8 +422,8 @@ function! <SID>ToggleList(bufname, pfx)
   endif
 endfunction
 
-nmap <silent> <leader>l :call <SID>ToggleList("Location List", 'l')<CR>
-nmap <silent> <leader>c :call <SID>ToggleList("Quickfix List", 'c')<CR>
+nnoremap <silent> <leader>l :call <SID>ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>c :call <SID>ToggleList("Quickfix List", 'c')<CR>
 nnoremap <silent> <leader>sc :cg /tmp/quickfix.out\|copen<CR>
 
 " saving (keep imap to avoid vim-surround from binding it)
@@ -440,30 +435,35 @@ nnoremap <C-s> <Esc>:update<CR>
 " inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
 " splits and such
-nmap <C-j> <C-w><C-j>
-nmap <C-k> <C-w><C-k>
-nmap <C-l> <C-w><C-l>
-nmap <C-h> <C-w><C-h>
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+
+" fix nvim's <C-h>
+if has('nvim')
+  nnoremap <BS> <C-w>h
+endif
 
 " insert movement
 inoremap <C-l> <Right>
 inoremap <C-h> <Left>
 
 " text wrapping toggle
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+nnoremap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
 
 " find conflicts
-nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Keybindings to native vim features
-map <M-[> :tprev<CR>
-map <M-]> :tnext<CR>
+noremap <M-[> :tprev<CR>
+noremap <M-]> :tnext<CR>
 
 " repeatng
-vnoremap . :normal .<CR>
-vnoremap @ :normal! @
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
+vmap . :normal .<CR>
+vmap @ :normal! @
+vmap <Tab> >gv
+vmap <S-Tab> <gv
 
 " line-endings
 inoremap ;<cr> <end>;<cr>
@@ -471,7 +471,7 @@ inoremap ;<cr> <end>;<cr>
 " searching
 command! -nargs=* -complete=file GG Grepper! -tool git -query <args>
 command! -nargs=* -complete=file Ag Grepper! -tool ag -query <args>
-nmap <C-f> :FZFAg<CR>
+nnoremap <C-f> :FZFAg<CR>
 
 " re-select pasted text
 noremap gV `[v`]
@@ -490,14 +490,14 @@ endfunction
 command! -nargs=* -complete=file Notes call s:notes(<f-args>)
 
 " vim-test
-nmap <silent> <Leader>t :TestFile<CR>
-nmap <silent> <Leader>T :TestNearest<CR>
-nmap <silent> <Leader>tl :TestLast<CR>
-nmap <silent> <Leader>ta :TestSuite<CR>
+nnoremap <silent> <Leader>t :TestFile<CR>
+nnoremap <silent> <Leader>T :TestNearest<CR>
+nnoremap <silent> <Leader>tl :TestLast<CR>
+nnoremap <silent> <Leader>ta :TestSuite<CR>
 
-nmap <silent> <F7> :TestLast<CR>
-nmap <silent> <F8> :TestFile<CR>
-nmap <silent> <F9> :TestSuite<CR>
+nnoremap <silent> <F7> :TestLast<CR>
+nnoremap <silent> <F8> :TestFile<CR>
+nnoremap <silent> <F9> :TestSuite<CR>
 
 " vim-jdaddy
 command! JSONPrettyPrint :normal gqaj
@@ -506,18 +506,17 @@ command! JSONPrettyPrint :normal gqaj
 nnoremap <leader>fw :FixWhitespace<cr>
 
 " splitjoin
-nmap gS :SplitjoinSplit<cr>
-nmap gJ :SplitjoinJoin<cr>
+nnoremap gS :SplitjoinSplit<cr>
+nnoremap gJ :SplitjoinJoin<cr>
 
 " vim-commentary
 map <C-_> gcc<Esc>
-" imap <C-_> <Esc>gccgi
 
 " vim-ragtag open tag
 imap <C-_> <C-x>=
 
 " vimux
-map <Leader>vc :VimuxCloseRunner<CR>
+nnoremap <Leader>vc :VimuxCloseRunner<CR>
 
 " vim-unimpaired
 imap <C-Up> <Esc>[egi
@@ -527,9 +526,9 @@ nmap <C-down> ]e
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
-" autoformat
-map <silent> <leader>= :Autoformat ff=unix<cr>
-map <silent> <F1> :FixWhitespace<cr><leader>=<cr>
+" autoformat / fix-whitespace
+noremap <silent> <leader>= :Autoformat ff=unix<cr>
+noremap <silent> <F1> :FixWhitespace<cr><leader>=<cr>
 
 " nerdtree
 nnoremap <leader>e :NERDTreeToggle<cr>
@@ -541,15 +540,15 @@ nnoremap <leader>y :YRShow<cr>
 nnoremap <leader>b :TagbarToggle<cr>
 
 " airline
-nmap 1 <Plug>AirlineSelectTab1
-nmap 2 <Plug>AirlineSelectTab2
-nmap 3 <Plug>AirlineSelectTab3
-nmap 4 <Plug>AirlineSelectTab4
-nmap 5 <Plug>AirlineSelectTab5
-nmap 6 <Plug>AirlineSelectTab6
-nmap 7 <Plug>AirlineSelectTab7
-nmap 8 <Plug>AirlineSelectTab8
-nmap 9 <Plug>AirlineSelectTab9
+nnoremap 1 <Plug>AirlineSelectTab1
+nnoremap 2 <Plug>AirlineSelectTab2
+nnoremap 3 <Plug>AirlineSelectTab3
+nnoremap 4 <Plug>AirlineSelectTab4
+nnoremap 5 <Plug>AirlineSelectTab5
+nnoremap 6 <Plug>AirlineSelectTab6
+nnoremap 7 <Plug>AirlineSelectTab7
+nnoremap 8 <Plug>AirlineSelectTab8
+nnoremap 9 <Plug>AirlineSelectTab9
 
 " tabularize
 noremap <leader>a= :Tabularize /=<CR>
@@ -571,9 +570,8 @@ augroup VimrcGroup
 
   autocmd BufNewFile,BufRead *.less set filetype=less
   autocmd BufNewFile,BufRead .jsbeautifyrc,.eslintrc,.jshintrc set filetype=json
-  autocmd BufNewFile,BufRead *.rss,*.atom set filetype=xml
   autocmd BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,Guardfile,config.ru,*.rake,*.thor} set filetype=ruby
-  autocmd BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} set filetype=markdown
+  autocmd BufRead,BufNewFile *.{md,markdown} set filetype=markdown
   autocmd BufRead,BufNewFile *.{zsh,sh,bash} set filetype=sh
 
   " auto-reload vimrc
@@ -587,66 +585,13 @@ augroup VimrcGroup
   autocmd FileType ruby setlocal omnifunc=rubycomplete#CompleteTags
 
   " skeletons
-  autocmd BufNewFile *_spec.rb    0read ~/.vim/skeletons/skeleton_spec.rb
-  autocmd BufNewFile *.sh         0read ~/.vim/skeletons/skeleton.sh
   autocmd BufNewFile *.{bash,zsh} 0read ~/.vim/skeletons/skeleton.zsh
 
   " linters
   autocmd BufWritePost * Neomake
 
-  " quickfix gutter signs
-  " SEE: https://github.com/dhruvasagar/vim-markify
-  " NOTE: clean this up, and put it somewhere better
-  let s:sign_ids = {}
-  let s:sign_text = "\uE0B1"
-  let s:sign_texthl = 'LintError'
-
-  execute 'sign define QuickfixError text='.s:sign_text.' texthl=' . s:sign_texthl
-
-  function! s:ClearSigns()
-    for l:sign_id in keys(s:sign_ids)
-      exec 'sign unplace ' . l:sign_id
-      call remove(s:sign_ids, l:sign_id)
-    endfor
-  endfunction
-
-  function! s:PlaceSigns(items)
-    for l:item in a:items
-      if l:item.bufnr == 0 || l:item.lnum == 0
-        continue
-      endif
-
-      let l:id = l:item.bufnr . l:item.lnum
-
-      if has_key(s:sign_ids, l:id)
-        return
-      endif
-
-      let s:sign_ids[l:id] = l:item
-
-      let l:sign_name = 'QuickfixError'
-      " if l:item.type ==? 'E'
-      "   let l:sign_name = 'QuickfixError'
-      " elseif l:item.type ==? 'W'
-      "   let l:sign_name = 'QuickfixWarning'
-      " else
-      "   let l:sign_name = 'QuickfixInfo'
-      " endif
-
-      execute 'sign place ' . l:id . ' line=' . l:item.lnum . ' name=' . l:sign_name .
-            \ ' buffer=' .  l:item.bufnr
-    endfor
-  endfunction
-
-  function! s:PlaceQuickfixSigns()
-    let [items, qflist]  = [[], getqflist()]
-    if !empty(qflist)
-      let items = qflist
-    endif
-    call s:PlaceSigns(items)
-  endfunction
-
-  autocmd QuickFixCmdPost * call s:ClearSigns() | call s:PlaceQuickfixSigns()
+  " quickfix + loclist signs
+  " autocmd QuickFixCmdPost * call Markify()
 augroup END
 
 augroup MarkdownGroup
@@ -694,6 +639,9 @@ augroup GolangGroup
   autocmd FileType go nmap <buffer> <localleader>gt :GoTest<cr>
   autocmd FileType go nmap <buffer> <localleader>gd <Plug>(go-doc-vertical)
   autocmd FileType go nmap <buffer> <localleader>gf <Plug>(go-def-vertical)
+
+  " don't show preview window for golang completions
+  autocmd FileType go setlocal completeopt-=preview
 augroup END
 
 augroup AirlineGroup
