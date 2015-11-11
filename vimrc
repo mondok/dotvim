@@ -59,6 +59,8 @@ let g:fzf_command_prefix = 'FZF'
 Plug 'robhurring/todo.vim'
 let g:todo_file = expand('~/Dropbox/config/todo.md')
 
+Plug 'dkprice/vim-easygrep'
+
 Plug 'mhinz/vim-grepper'
 let g:grepper = {}
 let g:grepper.open = 1
@@ -240,7 +242,7 @@ runtime macros/matchit.vim
 
 " set autochdir
 
-
+set timeoutlen=100
 set autoindent
 set autoread
 set backupdir=~/.vim/tmp
