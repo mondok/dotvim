@@ -164,6 +164,7 @@ let g:AutoPairsShortcutJump = '<M-n>'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'shime/vim-livedown', {'for': 'markdown'}
 Plug 'wincent/ferret'
+Plug 'terryma/vim-multiple-cursors'
 " html/css/js
 
 Plug 'tpope/vim-jdaddy', {'for': 'json'}
