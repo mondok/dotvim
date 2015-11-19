@@ -30,8 +30,6 @@ Plug 'Shougo/vimproc.vim'    " dep for: vim-go(O)
 
 " color schemes
 
-Plug 'sheerun/vim-wombat-scheme'
-
 " misc plugins
 
 Plug 'godlygeek/tabular', {'on': 'Tabularize'}
@@ -47,10 +45,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-unimpaired'
 Plug 'Chiel92/vim-autoformat'
-" Plug 'dhruvasagar/vim-markify'
-" let g:markify_error_text = "\u25CF"
-" let g:markify_warning_text = "\u25CF"
-" let g:markify_info_text = "\u25CF"
+
+Plug 'haya14busa/incsearch.vim'
+let g:incsearch#auto_nohlsearch = 1
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -58,8 +55,6 @@ let g:fzf_command_prefix = 'FZF'
 
 Plug 'robhurring/todo.vim'
 let g:todo_file = expand('~/Dropbox/config/todo.md')
-
-Plug 'dkprice/vim-easygrep'
 
 Plug 'mhinz/vim-grepper'
 let g:grepper = {}
@@ -81,8 +76,20 @@ let g:airline_powerline_fonts = 1
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline_detect_paste = 1
-let g:airline_theme = 'tomorrow'
-
+let g:airline_theme = 'bubblegum'
+let g:airline_mode_map = {
+      \ '__' : '-',
+      \ 'n'  : 'N',
+      \ 'i'  : 'I',
+      \ 'R'  : 'R',
+      \ 'c'  : 'C',
+      \ 'v'  : 'V',
+      \ 'V'  : 'V',
+      \ '' : 'V',
+      \ 's'  : 'S',
+      \ 'S'  : 'S',
+      \ '' : 'S',
+      \ }
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#hunks#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
@@ -107,9 +114,7 @@ let g:signify_vcs_list = ['git']
 
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 let g:NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.py\$class$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$']
-let g:NERDTreeShowBookmarks=1
 let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeBookmarksFile = '~/.vim/bookmarks'
 let g:NERDTreeChDirMode = 2
 let g:NERDTreeWinSize = 30
 let g:NERDTreeMinimalUI = 1
@@ -132,19 +137,11 @@ let g:neomake_ruby_rspec_maker = {
       \ 'errorformat': '%E%f:%l:\ %m'
       \ }
 
-Plug 'ludovicchabant/vim-gutentags', {'do': 'gem install ripper-tags'}
+Plug 'tpope/vim-bundler'
+
+Plug 'ludovicchabant/vim-gutentags', {'do': 'rvm default do gem install ripper-tags'}
 let g:gutentags_ctags_executable_ruby = 'ripper-tags'
 let g:gutentags_cache_dir = '~/.vim/tags'
-
-" Plug 'szw/vim-tags'
-" let g:vim_tags_auto_generate = 0
-" let g:vim_tags_cache_dir = expand('~/.vim/tmp')
-" let g:vim_tags_ignore_files = ['.gitignore']
-" let g:vim_tags_ignore_file_comment_pattern = '^[#"]'
-" let g:vim_tags_directories = ['.git']
-" let g:vim_tags_main_file = 'tags'
-" let g:vim_tags_use_language_field = 1
-" let g:vim_tags_use_vim_dispatch = 1
 
 Plug 'vim-scripts/YankRing.vim'
 let g:yankring_history_dir = '$HOME/.vim/tmp'
@@ -163,12 +160,12 @@ let g:AutoPairsShortcutJump = '<M-n>'
 
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'shime/vim-livedown', {'for': 'markdown'}
-Plug 'wincent/ferret'
-Plug 'terryma/vim-multiple-cursors'
+
 " html/css/js
 
 Plug 'tpope/vim-jdaddy', {'for': 'json'}
 Plug 'tpope/vim-ragtag'
+Plug 'kchmck/vim-coffee-script', {'for': 'coffee'}
 
 Plug 'elzr/vim-json', {'for': 'json'}
 let g:vim_json_syntax_conceal = 0
@@ -203,16 +200,14 @@ Plug 'elixir-lang/vim-elixir'
 
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'rhysd/vim-textobj-ruby'
-
 Plug 'tpope/vim-cucumber'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
-
 Plug 'janko-m/vim-test'
 " let test#strategy = 'dispatch'
 " let test#ruby#rspec#executable = 'auto-bundle-exec rspec'
 let g:test#strategy = 'vimux'
-let g:test#ruby#rspec#executable = 'auto-bundle-exec rspec --require=~/.vim/config/rspec_vim_formatter.rb --format VimFormatter --out /tmp/quickfix.out --format progress'
+let g:test#ruby#rspec#executable = 'auto-bundle-exec rspec --require=~/.vim/config/rspec_vim_formatter.rb --format VimFormatter --out /tmp/last-spec-failures.out --format progress'
 
 " ABRT error: https://github.com/Valloric/YouCompleteMe/issues/8
 " Solutions: add this to your ~/.<shell>rc
@@ -243,7 +238,6 @@ runtime macros/matchit.vim
 
 " set autochdir
 
-set timeoutlen=100
 set autoindent
 set autoread
 set backupdir=~/.vim/tmp
@@ -253,6 +247,8 @@ set cursorline
 set diffopt=filler,iwhite,vertical               " In diff mode, ignore whitespace changes and align unchanged lines
 set expandtab
 set exrc                                         " enable per-directory .vimrc files
+set foldenable
+set foldlevel=99
 set guifont=Hack:h15
 set hidden                                       " Don't abandon buffers moved to the background
 set hlsearch
@@ -263,8 +259,6 @@ set lazyredraw
 set list                                         " Display unprintable characters
 set listchars=tab:▸\ ,extends:»,precedes:«
 set noerrorbells                                 " Disable error bells
-set foldenable
-set foldlevel=99
 set nowrap
 set number
 set scrolloff=3                                  " Start scrolling 3 lines before the horizontal window border
@@ -324,21 +318,14 @@ try
 catch
 endtry
 
-" Wombat overrides
+" Theme overrides
 " http://www.colorpicker.com
 
-highlight SignColumn    cterm=none ctermbg=233 guibg=#111111
-highlight LineNr        cterm=none ctermbg=233 guibg=#111111
-highlight CursorLineNr  cterm=none ctermbg=233 guifg=#d4d987 guibg=#111111
-highlight Search        cterm=none ctermfg=177 ctermbg=238   guifg=#cd7ffa guibg=#3a3a3a
-highlight Todo          cterm=none ctermfg=207 ctermbg=none  guifg=#e158e8 guibg=#5b415c
-highlight ColorColumn   cterm=none ctermbg=234 guibg=#292929
-
-" custom highlightings
+" neomake highlightings
 highlight LintError   cterm=none ctermbg=233 ctermfg=205 guifg=#e5786d guibg=#111111
 highlight LintWarning cterm=none ctermbg=233 ctermfg=97  guifg=#9933ff guibg=#111111
 
-" plugin highlightings
+" signify plugin highlightings
 highlight ExtraWhitespace   cterm=none ctermbg=160 guibg=#aa00ff
 highlight SignifySignAdd    cterm=bold ctermbg=233 ctermfg=118 guifg=#95e454 guibg=#111111
 highlight SignifySignDelete cterm=bold ctermbg=233 ctermfg=167 guifg=#e5786d guibg=#111111
@@ -359,12 +346,6 @@ nnoremap <leader><leader> <C-^>
 " vim-expand-region
 vnoremap v <Plug>(expand_region_expand)
 vnoremap <C-v> <Plug>(expand_region_shrink)
-
-" jump to end after pasting
-" vnoremap <silent> y y`]
-" vnoremap <silent> p p`]
-" nnoremap <silent> p p`]
-" nnoremap <silent> P P`]
 
 " fatfingers
 command! Q q " Bind :Q to :q
@@ -393,9 +374,9 @@ nnoremap <NUL> :FZFFiles<cr>
 nnoremap <C-Space> :FZFFiles<cr>
 
 " jit
-nnoremap <silent> <localleader>J <Plug>(jit-prompt)
-nnoremap <silent> <localleader>jo <Plug>(jit-open-prompt)
-nnoremap <silent> <localleader>jO <Plug>(jit-open-word)
+nmap <localleader>J <Plug>(jit-prompt)
+nmap <localleader>jo <Plug>(jit-open-prompt)
+nmap <localleader>jO <Plug>(jit-open-word)
 
 " toggle quickfix/location
 function! s:GetBufferList()
@@ -427,7 +408,7 @@ endfunction
 
 nnoremap <silent> <leader>l :call <SID>ToggleList("Location List", 'l')<CR>
 nnoremap <silent> <leader>c :call <SID>ToggleList("Quickfix List", 'c')<CR>
-nnoremap <silent> <leader>sc :cg /tmp/quickfix.out\|copen<CR>
+nnoremap <silent> <leader>sc :cg /tmp/last-spec-failures.out\|lopen<CR>
 
 " saving (keep imap to avoid vim-surround from binding it)
 inoremap <C-s> <Esc>:update<CR>
@@ -462,6 +443,9 @@ nnoremap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 noremap <M-[> :tprev<CR>
 noremap <M-]> :tnext<CR>
 
+" marks
+nnoremap gm m
+
 " repeatng
 vmap . :normal .<CR>
 vmap @ :normal! @
@@ -475,6 +459,17 @@ inoremap ;<cr> <end>;<cr>
 command! -nargs=* -complete=file GG Grepper! -tool git -query <args>
 command! -nargs=* -complete=file Ag Grepper! -tool ag -query <args>
 nnoremap <C-f> :FZFAg<CR>
+
+" incsearch.vim
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
 
 " re-select pasted text
 noremap gV `[v`]
@@ -543,15 +538,15 @@ nnoremap <leader>y :YRShow<cr>
 nnoremap <leader>b :TagbarToggle<cr>
 
 " airline
-nnoremap 1 <Plug>AirlineSelectTab1
-nnoremap 2 <Plug>AirlineSelectTab2
-nnoremap 3 <Plug>AirlineSelectTab3
-nnoremap 4 <Plug>AirlineSelectTab4
-nnoremap 5 <Plug>AirlineSelectTab5
-nnoremap 6 <Plug>AirlineSelectTab6
-nnoremap 7 <Plug>AirlineSelectTab7
-nnoremap 8 <Plug>AirlineSelectTab8
-nnoremap 9 <Plug>AirlineSelectTab9
+nmap 1 <Plug>AirlineSelectTab1
+nmap 2 <Plug>AirlineSelectTab2
+nmap 3 <Plug>AirlineSelectTab3
+nmap 4 <Plug>AirlineSelectTab4
+nmap 5 <Plug>AirlineSelectTab5
+nmap 6 <Plug>AirlineSelectTab6
+nmap 7 <Plug>AirlineSelectTab7
+nmap 8 <Plug>AirlineSelectTab8
+nmap 9 <Plug>AirlineSelectTab9
 
 " tabularize
 noremap <leader>a= :Tabularize /=<CR>
