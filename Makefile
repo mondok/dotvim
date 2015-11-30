@@ -20,7 +20,7 @@ bootstrap-neovim: .neovim
 
 # ---> plugin commands
 
-update:
+update: snapshot
 	@git pull
 	@make bundle-update
 
@@ -31,7 +31,7 @@ bundle:
 	vim +PlugInstall +PlugClean! +qall
 
 bundle-update:
-	vim +PlugUpdate +PlugClean! +qall
+	vim +PlugUpdate +PlugClean!
 
 snapshot:
 	@mkdir -p $(SNAPSHOTS_HOME)
@@ -64,3 +64,4 @@ $(XDG_CONFIG_HOME)/nvim/init.vim: $(HOME)/.vimrc
 	[[ $(shell which pip2) ]] && sudo pip2 install neovim
 	[[ $(shell which pip3) ]] && sudo pip3 install neovim
 	nvim +UpdateRemotePlugins +qall
+
